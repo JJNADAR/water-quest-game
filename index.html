@@ -1,44 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>water quest: clean vs dirty</title>
+  <meta name="viewport" content="width=device-width">
+  <title>water quest</title>
+
   <link href="style.css" rel="stylesheet" type="text/css" />
+
+  <!-- Simple clean font upgrade -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+
   <div class="container">
 
-    <!-- Logo / Branding -->
-    <img src="https://www.charitywater.org/v2/images/logo.png" alt="charity: water logo" class="logo">
-
     <h1> water quest</h1>
+
     <p class="game-instructions">
-      collect clean water and avoid dirty yucky water.<br>
-      reach <strong>20 points</strong> before time runs out!
+      collect water cans, avoid the nasty doo doo water, and complete yo mission!
     </p>
 
-    <!-- Stats -->
+    <!-- the difficulty level buttons -->
+    <div class="difficulty">
+      <p><strong>Choose Difficulty:</strong></p>
+      <button onclick="setDifficulty('easy')">Easy</button>
+      <button onclick="setDifficulty('normal')">Normal</button>
+      <button onclick="setDifficulty('hard')">Hard</button>
+    </div>
+
+    <!-- gonnanb be stats -->
     <div class="stats">
       <p>Score: <span id="current-cans">0</span></p>
       <p>Time Left: <span id="timer">30</span>s</p>
     </div>
 
-    <!-- Feedback / Win Message -->
+    <!-- the achievements -->
     <div id="achievements" class="achievement"></div>
 
-    <!-- Game Area -->
+    <!-- my game area -->
     <div class="game-grid"></div>
 
-    <!-- Controls -->
-    <div class="controls">
-      <button id="start-game">Start Game</button>
-      <button id="reset-game">Reset</button>
-    </div>
+    <!-- controls -->
+    <button id="start-game">Start Game</button>
+
+    <!-- footer requimrenet -->
+    <footer style="margin-top: 40px; text-align: center;">
+      <p><strong>Learn more about clean water:</strong></p>
+      <a href="https://www.charitywater.org" target="_blank">charity: water website</a>
+      <br>
+      <a href="https://www.charitywater.org/donate" target="_blank">Donate here</a>
+    </footer>
 
   </div>
 
   <script src="script.js"></script>
+
 </body>
 </html>

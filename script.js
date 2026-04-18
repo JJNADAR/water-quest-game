@@ -1,129 +1,158 @@
-// my game configuration
-const GOAL_CANS = 20;
-
 let score = 0;
 let timeLeft = 30;
 let gameActive = false;
 let spawnInterval;
 let timerInterval;
+let difficulty = "normal";
+let scoreGoal = 20;
 
-// spawn grid
+// Create grid
 function createGrid() {
-  const grid = document.querySelector('.game-grid');
-  grid.innerHTML = '';
+  const grid = document.querySelector(".game-grid");
+  grid.innerHTML = "";
+
   for (let i = 0; i < 9; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'grid-cell';
+    const cell = document.createElement("div");
+    cell.className = "grid-cell";
     grid.appendChild(cell);
   }
 }
 
-// spawn the water can
-function spawnWaterCan() {
+createGrid();
+
+// Difficulty system
+function setDifficulty(level) {
+  difficulty = level;
+
+  if (level === "easy") {
+    timeLeft = 40;
+    scoreGoal = 15;
+  }
+
+  if (level === "normal") {
+    timeLeft = 30;
+    scoreGoal = 20;
+  }
+
+  if (level === "hard") {
+    timeLeft = 20;
+    scoreGoal = 25;
+  }
+
+  document.getElementById("timer").textContent = timeLeft;
+}
+
+// Update score display
+function updateScore() {
+  document.getElementById("current-cans").textContent = score;
+  checkWin();
+  checkMilestones();
+}
+
+// the milestone
+function checkMilestones() {
+  const message = document.getElementById("achievements");
+
+  if (score === 5) message.textContent = "good start yo!";
+  if (score === 10) message.textContent = "yo halfway there!";
+  if (score === 15) message.textContent = "cmon almost there!";
+}
+
+// win condition statement
+function checkWin() {
+  if (score >= scoreGoal) {
+    endGame();
+    document.getElementById("achievements").textContent =
+      "🎉 You completed your water mission!";
+  }
+}
+
+// spawn the items
+function spawnItem() {
   if (!gameActive) return;
 
-  const cells = document.querySelectorAll('.grid-cell');
+  const cells = document.querySelectorAll(".grid-cell");
 
-  // reset the cells
-  cells.forEach(cell => (cell.innerHTML = ''));
+  cells.forEach(cell => (cell.innerHTML = ""));
 
   const randomCell = cells[Math.floor(Math.random() * cells.length)];
 
-  // pick dirty water or clean
-  const isClean = Math.random() < 0.7;
+  // Random chance for da doo doo waterrrr i shouldve made it harder
+  const isDirty = Math.random() < 0.2;
 
-  const typeClass = isClean ? "clean" : "dirty";
+  const item = document.createElement("div");
+  item.className = "water-can";
 
-  randomCell.innerHTML = `
-    <div class="water-can-wrapper ${typeClass}">
-      <div class="water-can"></div>
-    </div>
-  `;
+  if (isDirty) {
+    item.style.backgroundColor = "red";
+    item.dataset.type = "dirty";
+  } else {
+    item.dataset.type = "clean";
+  }
 
-  const can = randomCell.querySelector('.water-can-wrapper');
-
-  can.onclick = function () {
-    if (!gameActive) return;
-
-    if (isClean) {
+  item.addEventListener("click", () => {
+    if (item.dataset.type === "clean") {
       score++;
     } else {
       score--;
     }
 
-    document.getElementById('current-cans').textContent = score;
+    updateScore();
+    item.remove();
+  });
 
-    randomCell.innerHTML = '';
-
-    checkWin();
-  };
+  randomCell.appendChild(item);
 }
 
-// timer? doesnt really work but it should NOW!
+// timer works now woooo!
 function startTimer() {
   timerInterval = setInterval(() => {
     timeLeft--;
-    document.getElementById('timer').textContent = timeLeft;
+    document.getElementById("timer").textContent = timeLeft;
 
     if (timeLeft <= 0) {
-      endGame("⏰ Time’s up!");
+      endGame();
     }
   }, 1000);
 }
 
-// start da game
+// start the game
 function startGame() {
   if (gameActive) return;
 
-  score = 0;
-  timeLeft = 30;
   gameActive = true;
+  score = 0;
 
-  document.getElementById('current-cans').textContent = score;
-  document.getElementById('timer').textContent = timeLeft;
-  document.getElementById('achievements').textContent = "";
+  updateScore();
 
   createGrid();
 
-  spawnInterval = setInterval(spawnWaterCan, 800);
+  spawnInterval = setInterval(spawnItem, 800);
   startTimer();
 }
 
-// check the win
-function checkWin() {
-  if (score >= GOAL_CANS) {
-    endGame("🎉 You provided clean water to a community!");
-  }
-}
-
-// end the game
-function endGame(message) {
+// the end of game
+function endGame() {
   gameActive = false;
+
   clearInterval(spawnInterval);
   clearInterval(timerInterval);
 
-  document.getElementById('achievements').textContent = message;
+  document.getElementById("achievements").textContent =
+    "Game Over! Your final score: " + score;
 }
 
-// reset game
+// reset the game
 function resetGame() {
-  gameActive = false;
-  clearInterval(spawnInterval);
-  clearInterval(timerInterval);
-
+  endGame();
   score = 0;
   timeLeft = 30;
 
-  document.getElementById('current-cans').textContent = score;
-  document.getElementById('timer').textContent = timeLeft;
-  document.getElementById('achievements').textContent = "";
-
+  document.getElementById("timer").textContent = timeLeft;
+  document.getElementById("current-cans").textContent = score;
+  document.getElementById("achievements").textContent = "";
   createGrid();
 }
 
-// the event listeners
-document.getElementById('start-game').addEventListener('click', startGame);
-document.getElementById('reset-game').addEventListener('click', resetGame);
-
-// start grid on load
-createGrid();
+// going to be listener
+document.getElementById("start-game").addEventListener("click", startGame);
