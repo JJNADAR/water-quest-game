@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>water quest: clean vs dirty</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- Logo / Branding -->
+    <img src="https://www.charitywater.org/v2/images/logo.png" alt="charity: water logo" class="logo">
+
+    <h1> water quest</h1>
+    <p class="game-instructions">
+      collect clean water and avoid dirty yucky water.<br>
+      reach <strong>20 points</strong> before time runs out!
+    </p>
+
+    <!-- Stats -->
+    <div class="stats">
+      <p>Score: <span id="current-cans">0</span></p>
+      <p>Time Left: <span id="timer">30</span>s</p>
+    </div>
+
+    <!-- Feedback / Win Message -->
+    <div id="achievements" class="achievement"></div>
+
+    <!-- Game Area -->
+    <div class="game-grid"></div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button id="start-game">Start Game</button>
+      <button id="reset-game">Reset</button>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
